@@ -1,0 +1,138 @@
+<html>
+<head>
+    <style>
+        #invoice-details-table {
+            break-inside: auto;
+        }
+
+        #invoice-details-table tr {
+            break-inside: avoid-page;
+            break-after: auto;
+        }
+
+        #invoice-details-table thead {
+            display: table-header-group;
+        }
+
+        .styled-table {
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 0.9em;
+            font-family: sans-serif;
+            width: 100%;
+        }
+
+        .styled-table thead tr {
+            text-align: left;
+            border-bottom: 2px solid #dddddd;
+        }
+
+        .styled-table th,
+        .styled-table td {
+            padding: 12px 15px;
+            vertical-align: top;
+        }
+
+        .styled-table tbody tr {
+            border-bottom: 1px solid #dddddd;
+        }
+
+        .styled-table tbody tr:last-of-type {
+            border-bottom: 2px solid #dddddd;
+        }
+    </style>
+    <title>Invoice</title>
+</head>
+<body>
+<div style="margin:20px;font-family:Calibri">
+    <div style="display:inline-block; width:100%;line-height:22px;">
+        <div style="text-decoration:underline; font-size:8px;">COMPANY-ONELINER</div>
+        <div style="margin-top: 15px">$AREA</div>
+        <div>$INVOICEADDRESS1</div>
+        <div>$INVOICEADDRESS2</div>
+        <div>$INVOICEPOSTCODE $INVOICEADDRESS3</div>
+        <div>$INVOICEADDRESS4</div>
+    </div>
+    <div style="display:inline-block; width:66%;line-height:22px;">
+        <h3 style="margin-right:20px;margin:20px 0px;">Invoice</h3>
+        <div>$INVOICENOTE</div>
+    </div>
+    <div style="display:inline-block; width:33%; text-align:right;vertical-align:top">
+        <div>
+            <table style="padding-right:20px;align:right;margin-left:auto;margin-top:30px">
+                <tr>
+                    <td style="text-align:left;padding-right:5px;vertical-align:top"><b>Invoice No.:</b></td>
+                    <td>$INVOICEID</td>
+                </tr>
+                <tr>
+                    <td style="text-align:left;padding-right:5px;vertical-align:top"><b>Customer No.:</b></td>
+                    <td>$CLIENT_REFERENCE</td>
+                </tr>
+                <tr>
+                    <td style="text-align:left;padding-right:5px;vertical-align:top"><b>Invoice Date:</b></td>
+                    <td>$INVOICEDATE</td>
+                </tr>
+                <tr>
+                    <td style="text-align:left;padding-right:5px;vertical-align:top"><b>Account Manager:</b></td>
+                    <td>$ACCOUNTMANAGER</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div style="margin-top:30px">
+        <table class="styled-table" id="invoice-details-table">
+            $DETAILSTABLE
+        </table>
+        <div style="text-align:right;margin-top:20px">
+            <table style="align:right;margin-left:auto;width:30%;line-height:28px;border-collapse:collapse">
+                <tr>
+                    <td style="border-bottom:1px solid;text-align:left;padding-right:5px;vertical-align:top"><b>INVOICESUBTOTAL</b>
+                    </td>
+                    <td style="border-bottom:1px solid;text-align:right;">$INVOICESUBTOTAL</td>
+                </tr>
+                <tr>
+                    <td style="border-bottom:1px solid;text-align:left;padding-right:5px;vertical-align:top"><b>INVOICETAXTOTAL</b>
+                    </td>
+                    <td style="border-bottom:1px solid;text-align:right;">$INVOICETAXTOTAL</td>
+                </tr>
+                <tr>
+                    <td style="text-align:left;padding-right:5px;vertical-align:top"><b>INVOICETOTAL</b></td>
+                    <td style="text-align:right"><b>$INVOICETOTAL</b></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    const invoiceDetailsTable = document.getElementById('invoice-details-table');
+    const invoiceDetailsTableHeaders = invoiceDetailsTable.getElementsByTagName('thead')[0].getElementsByTagName('th');
+    const invoiceDetailsTableRows = invoiceDetailsTable.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+    const getColumnNumberForHeader = function (headerText) {
+        for (let i = 0; i < invoiceDetailsTableHeaders.length; i++) {
+            if (invoiceDetailsTableHeaders[i].innerText === headerText) {
+                return i;
+            }
+        }
+        return false;
+    }
+
+    const hideValueForRowByHeaderText = function (valueToHide, headerText) {
+        const rowNumberToHide = getColumnNumberForHeader(headerText);
+
+        if (rowNumberToHide === false)
+            return false;
+
+        for (let i = 0; i < invoiceDetailsTableRows.length; i++) {
+            if (invoiceDetailsTableRows[i].cells[rowNumberToHide].innerText === valueToHide) {
+                invoiceDetailsTableRows[i].cells[rowNumberToHide].innerText = "";
+            }
+        }
+    }
+    
+    hideValueForRowByHeaderText('€0.00', 'Discount');
+    
+</script>
+</body>
+</html>
